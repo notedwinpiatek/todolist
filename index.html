@@ -1,38 +1,59 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pl">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=<device-width>, initial-scale=1.0">
-    <title>Document</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista rzeczy do zrobienia</title>
 </head>
-<body>
+
+<body onload="init()">
     <h1>Lista zadań</h1>
-    <h2>Cześć <span id="name"></span>, to są twoje zadania na dziś:</h2>
-    <div id="tasklist">
+    <h2>Cześć <span id="name"></span>, twoje zadania na dziś:</h2>
+    <div id="taskList">
 
     </div>
     <h2>Dodaj nowe zadanie:</h2>
     <input type="text" name="" id="task">
     <button onclick="addTask()">Dodaj</button>
     <script>
-        //window.localStorage.setItem('name', 'Edwin');
-        if(window.localStorage.getItem('name') === null) {
-            let name = window.prompt("Podaj imię:");
-            window.localStorage.setItem('name', name);
-                }
-                document.getElementById('name').innerHTML = window.localStorage.getItem('name');
-                document.getElementById('tasklist').innerHTML = window.localStorage.getItem('tasklist');
 
-                function addTask() {
-                    let task = document.getElementById('task').value;
-                    let tasklist = JSON.parse(window.localStorage.getItem('tasklist'));
-                    if(tasklist === null) tasklist = Array();
-                    tasklist.push(task);
-                    window.localStorage.setItem('tasklist', JSON.stringify(tasklist));
-                    window.localStorage.setItem('task', task);
-                    document.getElementById('tasklist').innerHTML = window.localStorage.getItem('tasklist');
-                }
+
+        function init() {
+            //window.localStorage.setItem('name', 'Paweł'); // tak zapisujemy do magazynu
+            if (window.localStorage.getItem('name') === null) { //jesli nie ma zapisu o takim kluczu zwraca null
+                let name = window.prompt("Podaj imię: "); //wyświetl okientko z zapytaniem
+                window.localStorage.setItem('name', name); //zapisz imie do magazynu
+            }
+            document.getElementById('name').innerHTML = window.localStorage.getItem('name');
+            showTaskList();
+        }
+        function addTask() {
+            let task = document.getElementById('task').value;
+            let taskList = JSON.parse(window.localStorage.getItem('taskList'));
+            if (taskList === null) taskList = Array(); //zabezpieczenie na wypadek pustej listy  
+            taskList.push(task);
+            //console.log(taskList);
+            window.localStorage.setItem('taskList', JSON.stringify(taskList));
+            document.getElementById('task').value = "";
+            showTaskList();
+        }
+        function showTaskList() {
+            let taskArray = JSON.parse(window.localStorage.getItem('taskList'));
+            if(taskArray === null) return;
+            let taskList = document.getElementById('taskList');
+            //console.log(taskArray.length);
+            let htmlBuffer = "";
+            htmlBuffer += "<ul>";
+            for (let i = 0; i < taskArray.length; i++) {
+                htmlBuffer += "<li>" + taskArray[i] + "</li>";
+            }
+            htmlBuffer += "</ul>";
+            //console.log(htmlBuffer);
+            taskList.innerHTML = htmlBuffer;
+        }
     </script>
 </body>
+
 </html>
