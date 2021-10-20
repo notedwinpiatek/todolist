@@ -22,12 +22,16 @@
             window.localStorage.setItem('name', name);
                 }
                 document.getElementById('name').innerHTML = window.localStorage.getItem('name');
-                document.getElementById('tasklist').innerHTML = window.localStorage.getItem('task');
+                document.getElementById('tasklist').innerHTML = window.localStorage.getItem('tasklist');
 
                 function addTask() {
                     let task = document.getElementById('task').value;
+                    let tasklist = JSON.parse(window.localStorage.getItem('tasklist'));
+                    if(tasklist === null) tasklist = Array();
+                    tasklist.push(task);
+                    window.localStorage.setItem('tasklist', JSON.stringify(tasklist));
                     window.localStorage.setItem('task', task);
-                    document.getElementById('tasklist').innerHTML = window.localStorage.getItem('task');
+                    document.getElementById('tasklist').innerHTML = window.localStorage.getItem('tasklist');
                 }
     </script>
 </body>
