@@ -17,6 +17,7 @@
     <h2>Dodaj nowe zadanie:</h2>
     <input type="text" name="" id="task">
     <button onclick="addTask()">Dodaj</button>
+    <button onclick="delTask()">usuń</button>
     <script>
 
 
@@ -47,12 +48,21 @@
             let htmlBuffer = "";
             htmlBuffer += "<ul>";
             for (let i = 0; i < taskArray.length; i++) {
-                htmlBuffer += "<li>" + taskArray[i] + "</li>";
+                htmlBuffer += "<li><button onclick=\"removeTask("+i+")\">Usuń</button>"
+                    +taskArray[i] + "</li>";
             }
             htmlBuffer += "</ul>";
             //console.log(htmlBuffer);
             taskList.innerHTML = htmlBuffer;
+
+            function removeTask(i) {
+                let taskArray = JSON.PRASE(window.localStorage.getItem('tasklist'));
+                taskArray.splice(i, 1);
+                window.localStorage.setItem('tasklist', JSON.stringify(tasklist));
+                showTaskList();
+            }
         }
+
     </script>
 </body>
 
